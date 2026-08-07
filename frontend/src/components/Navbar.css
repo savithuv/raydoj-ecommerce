@@ -1,0 +1,149 @@
+/* 1. THE MAIN CONTAINER */
+.navbar-container {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  padding: 15px 50px; 
+  background-color: white;
+  border-bottom: 1px solid #eaeaea; 
+}
+
+/* 2. LEFT SIDE (REAL LOGO) */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 15px; 
+}
+
+.real-logo {
+  height: 45px; /* Adjust this number if your logo is too big/small */
+  width: auto;
+}
+
+.brand-name {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+/* 3. WRAPPER */
+.nav-links-wrapper {
+  display: flex;
+  flex: 1; 
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 50px; 
+}
+
+/* 4. MIDDLE (LINKS) */
+.nav-middle {
+  display: flex;
+  gap: 40px; 
+  list-style: none; 
+}
+
+.nav-middle a {
+  text-decoration: none; 
+  color: black;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* 5. RIGHT SIDE */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 25px; 
+}
+
+/* 6. SEARCH BOX (MATCHING FIGMA) */
+.search-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 25px; 
+  padding: 5px 15px;
+  background-color: white;
+}
+
+.search-box input {
+  border: none;
+  outline: none; 
+  font-size: 16px;
+  padding: 5px;
+  width: 150px;
+}
+
+/* 7. REAL ICONS SIZE CONTROL */
+.nav-icon {
+  height: 28px; /* Size for user and cart */
+  width: auto;
+  cursor: pointer;
+}
+
+.search-icon-size {
+  height: 18px; /* Slightly smaller for the search bar */
+}
+
+.search-btn, .icon-btn {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-group {
+  display: flex;
+  gap: 20px; 
+}
+
+/* 8. MOBILE RESPONSIVE TWEAKS */
+.hamburger-btn {
+  display: none; 
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .navbar-container {
+    padding: 15px 20px; 
+    position: relative; 
+  }
+
+  .hamburger-btn {
+    display: block; 
+  }
+
+  .nav-links-wrapper {
+    display: none; 
+    flex-direction: column; 
+    position: absolute; 
+    top: 100%; 
+    left: 0;
+    width: 100%;
+    background-color: white;
+    padding: 20px 0;
+    border-bottom: 1px solid #eaeaea;
+    gap: 20px;
+    z-index: 100;
+  }
+
+  .nav-links-wrapper.active {
+    display: flex; 
+  }
+
+  .nav-middle {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .nav-right {
+    flex-direction: column;
+    padding-top: 10px;
+  }
+}
