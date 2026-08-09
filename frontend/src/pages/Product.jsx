@@ -59,7 +59,7 @@ function Product() {
           </div>
 
           <button className="btn-solid">Add Cart</button>
-          <button className="btn-outline">Add Cart</button>
+          <button className="btn-outline">Buy Now</button>
 
           <div className="description-text">
             <div className="info-block">
