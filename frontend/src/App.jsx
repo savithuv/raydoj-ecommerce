@@ -1,11 +1,18 @@
 import React from 'react';
-import Navbar from './components/Navbar'; // This imports your Navbar block!
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import ProductGrid from './components/ProductGrid';
+import About from './components/About';
+import Footer from './components/Footer'; // Import the Footer
 
 function App() {
   return (
     <div>
-      {/* This places the Navbar onto the screen */}
-      <Navbar /> 
+      <Navbar />
+      <Hero />
+      <ProductGrid />
+      <About />
+      <Footer /> {/* The final piece! */}
     </div>
   );
 }

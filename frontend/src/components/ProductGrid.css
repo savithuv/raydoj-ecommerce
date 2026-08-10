@@ -1,0 +1,80 @@
+/* 1. SECTION PADDING */
+.product-section {
+  padding: 60px 50px;
+  background-color: #ffffff;
+}
+
+/* 2. THE CSS GRID MAGIC */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Desktop: 3 equal columns */
+  gap: 40px; /* Space between the wallets */
+  max-width: 1200px;
+  margin: 0 auto; /* Centers the grid on giant monitors */
+}
+
+/* 3. THE PRODUCT CARD */
+.product-card {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer; /* Makes it look clickable */
+}
+
+/* 4. IMAGE CONTAINER & STYLING */
+.image-box {
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Makes the image a perfect square! */
+  overflow: hidden;
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+}
+
+.image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 5. TEXT STYLING (Matching your Figma) */
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.product-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000000;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.product-desc {
+  font-size: 14px;
+  color: #555555;
+  margin: 0;
+}
+
+.product-price {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000000;
+  margin: 0;
+  margin-top: 5px;
+}
+
+/* =========================================
+   6. MOBILE RESPONSIVE RULES (The Secret Sauce)
+   ========================================= */
+@media (max-width: 768px) {
+  .product-section {
+    padding: 40px 20px; /* Smaller edge padding for phones */
+  }
+
+  .grid-container {
+    /* PHONE MODE: Crush the grid into exactly 1 column! */
+    grid-template-columns: 1fr; 
+    gap: 30px;
+  }
+}

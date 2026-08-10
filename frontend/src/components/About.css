@@ -1,0 +1,112 @@
+/* 1. MAIN SECTION PADDING */
+.about-section {
+  /* Changed side padding from 80px to 50px to perfectly match the Product Grid */
+  padding: 50px 50px; 
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+}
+
+/* 2. THE TWO LINES & LAYOUT */
+.about-container {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  /* Changed from 1000px to 1200px to perfectly match the Product Grid width! */
+  max-width: 1200px; 
+  width: 100%;
+  
+  /* This creates the top and bottom lines! */
+  border-top: 2px solid #000000;
+  border-bottom: 2px solid #000000;
+  padding: 40px 0; 
+}
+
+/* 3. LEFT SIDE (IMAGE) */
+.about-left {
+  flex: 1; /* Takes up 1 part of the space */
+  display: flex;
+  justify-content: center;
+}
+
+.profile-img {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%; /* Makes it a perfect circle */
+  object-fit: cover;
+}
+
+/* 4. RIGHT SIDE (TEXT) */
+.about-right {
+  flex: 2; /* Takes up 2 parts of the space (wider than the image) */
+  display: flex;
+  flex-direction: column;
+}
+
+.about-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #000000;
+}
+
+.about-text {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000000;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+
+/* 5. WHATSAPP BUTTON */
+.whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #58ea6c; /* Matching the Figma green */
+  color: #000000;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 10px 25px;
+  border-radius: 12px; /* Rounded corners */
+  text-decoration: none;
+  
+  /* Pushes the button to the right side! */
+  align-self: flex-end; 
+  transition: transform 0.2s;
+}
+
+.whatsapp-btn:hover {
+  transform: scale(1.05); /* Slight pop effect when hovering */
+}
+
+.whatsapp-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* =========================================
+   6. MOBILE RESPONSIVE TWEAKS
+   ========================================= */
+@media (max-width: 768px) {
+  .about-section {
+    padding: 30px 20px; /* Smaller side padding on phones */
+  }
+
+  .about-container {
+    flex-direction: column; /* Stacks the image on top of the text */
+    text-align: center;
+    gap: 30px;
+    padding: 30px 0;
+  }
+
+  .about-right {
+    align-items: center; /* Centers everything on mobile */
+  }
+
+  .whatsapp-btn {
+    align-self: center; /* Centers the button on mobile */
+  }
+}
