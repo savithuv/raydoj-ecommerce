@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // 1. Added Link import
 import './Navbar.css';
 
 // 1. Importing your real images from the assets folder!
@@ -51,9 +52,13 @@ const Navbar = () => {
             <button className="icon-btn">
               <img src={userIcon} alt="User" className="nav-icon" />
             </button>
-            <button className="icon-btn">
-              <img src={cartIcon} alt="Cart" className="nav-icon" />
-            </button>
+            
+            {/* 2. Wrapped the cart button with Link */}
+            <Link to="/cart">
+              <button className="icon-btn">
+                <img src={cartIcon} alt="Cart" className="nav-icon" />
+              </button>
+            </Link>
           </div>
 
         </div>
