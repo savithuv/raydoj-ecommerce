@@ -1,22 +1,24 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-// Import your friend's Home components from the components folder
+// Import Home Page Components
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ProductGrid from './components/ProductGrid';
 import About from './components/About';
 import Footer from './components/Footer';
 
-// Import your pages from the pages folder
-import Product from './pages/Product';
-import Cart from './pages/Cart';
+// Import Admin Components
+import AdminDashboard from './components/admin/AdminDashboard';
+import ManageProducts from './components/admin/ManageProducts'; 
+import ManageOrders from './components/admin/ManageOrders'; // Imported perfectly!
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        {/* 1. Home Page (combining your friend's components) */}
+        
+        {/* PAGE 1: THE HOME PAGE */}
         <Route path="/" element={
           <div>
             <Navbar />
@@ -27,13 +29,17 @@ function App() {
           </div>
         } />
 
-        {/* 2. Product Detail Page */}
-        <Route path="/product/:id" element={<Product />} />
+        {/* PAGE 2: THE MAIN ADMIN DASHBOARD */}
+        <Route path="/admin" element={<AdminDashboard />} />
 
-        {/* 3. Cart Page */}
-        <Route path="/cart" element={<Cart />} />
+        {/* PAGE 3: MANAGE PRODUCTS PAGE */}
+        <Route path="/admin/products" element={<ManageProducts />} />
+
+        {/* PAGE 4: MANAGE ORDERS PAGE (THIS IS WHAT WAS MISSING!) */}
+        <Route path="/admin/orders" element={<ManageOrders />} />
+
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 
