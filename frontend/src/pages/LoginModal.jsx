@@ -5,16 +5,17 @@ import logo from '../assets/logo.png';
 export default function LoginModal({ isOpen, onClose, onLoginSuccess, onSwitchToSignUp }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // Added Eye toggle state!
+  const [showPassword, setShowPassword] = useState(false); 
+  const [rememberMe, setRememberMe] = useState(false); // 🔥 Added Remember Me State
   
-  // Specific errors for each field
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [serverError, setServerError] = useState('');
 
-  const handleLoginClick = () => {
-    // Reset errors first
+  const handleLoginClick = async () => {
     setEmailError('');
     setPasswordError('');
+    setServerError('');
     let isValid = true;
 
     if (!email.includes('@')) {
@@ -27,7 +28,31 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess, onSwitchTo
     }
 
     if (isValid) {
-      onLoginSuccess();
+      try {
+        const response = await fetch('http://localhost:5000/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Save the security token in the browser memory
+          localStorage.setItem('token', data.token);
+          
+          // If remember me is checked, we can also store user preference if needed
+          if (rememberMe) {
+            localStorage.setItem('rememberedEmail', email);
+          }
+
+          onLoginSuccess(); 
+        } else {
+          setServerError(data.message || 'Login failed.');
+        }
+      } catch (error) {
+        setServerError('Server is down. Please try again later.');
+      }
     }
   };
 
@@ -46,7 +71,6 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess, onSwitchTo
 
         <form className="login-form">
           
-          {/* EMAIL FIELD */}
           <div className="input-group">
             <label>Email</label>
             <div className="input-with-icon">
@@ -56,14 +80,12 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess, onSwitchTo
                 placeholder="Enter your email" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={emailError ? 'input-error' : ''} /* Adds the red border & shake if error! */
+                className={emailError ? 'input-error' : ''} 
               />
             </div>
-            {/* The red text that pops up below the field */}
             {emailError && <div className="field-error-text">{emailError}</div>}
           </div>
           
-          {/* PASSWORD FIELD (Now with the Eye Icon!) */}
           <div className="input-group">
             <label>Password</label>
             <div className="input-with-icon">
@@ -87,9 +109,18 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess, onSwitchTo
           </div>
 
           <div className="form-actions">
-            <label><input type="checkbox" /> Remember me</label>
+            <label>
+              <input 
+                type="checkbox" 
+                checked={rememberMe} 
+                onChange={(e) => setRememberMe(e.target.checked)} 
+              /> 
+              Remember me
+            </label>
             <a href="#" className="forgot-password">Forgot password?</a>
           </div>
+
+          {serverError && <div className="field-error-text" style={{textAlign: 'center', marginBottom: '10px'}}>{serverError}</div>}
 
           <button type="button" className="login-submit-btn" onClick={handleLoginClick}>
             Login

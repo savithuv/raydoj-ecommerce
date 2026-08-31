@@ -1,66 +1,94 @@
-<<<<<<< HEAD
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-// Import Home Page Components
-=======
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// Import Pages & Modals
+import LoginModal from './pages/LoginModal';
+import SignUpModal from './pages/SignUpModal';
+import Cart from './pages/Cart'; 
+import Product from './pages/Product';
+import Checkout from './pages/Checkout'; // 🔥 1. Import Checkout Page
 
-// Components
->>>>>>> product-page
+// Import Home Page Components
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ProductGrid from './components/ProductGrid';
 import About from './components/About';
 import Footer from './components/Footer';
 
-<<<<<<< HEAD
 // Import Admin Components
 import AdminDashboard from './components/admin/AdminDashboard';
 import ManageProducts from './components/admin/ManageProducts'; 
 import ManageOrders from './components/admin/ManageOrders'; 
-=======
-// Pages
-import Product from './pages/Product';
-import Cart from './pages/Cart';
-import LoginModal from './pages/LoginModal'; 
-import SignUpModal from './pages/SignUpModal'; // <-- 1. Import the new Sign Up file!
->>>>>>> product-page
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
-  // 2. These are the switches for BOTH popups
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
+  
+  // Automatically checks if token exists on page load!
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token')); 
 
-  // 3. This function closes Sign Up and opens Login
-  const openLogin = () => {
-    setIsSignUpModalOpen(false);
-    setIsLoginModalOpen(true);
+  // Global Cart State
+  const [cartItems, setCartItems] = useState([]);
+
+  const handleAddToCart = (product) => {
+    setCartItems(prev => {
+      const exists = prev.find(item => item.id === product.id);
+      if (exists) {
+        return prev.map(item => item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item);
+      }
+      return [...prev, { ...product, quantity: 1 }];
+    });
   };
 
-  // 4. This function closes Login and opens Sign Up
-  const openSignUp = () => {
+  // 🔥 2. Clear Cart helper function after checkout
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
+  const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
+  const openLoginModal = () => setIsLoginModalOpen(true);
+  const openSignUpModal = () => {
     setIsLoginModalOpen(false);
     setIsSignUpModalOpen(true);
+  };
+  const closeModals = () => {
+    setIsLoginModalOpen(false);
+    setIsSignUpModalOpen(false);
+  };
+
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+    closeModals();
+  };
+
+  // Handle Logout Logic
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    alert('Logged out successfully!');
   };
 
   return (
     <BrowserRouter>
+      <LoginModal 
+        isOpen={isLoginModalOpen} 
+        onClose={closeModals} 
+        onSwitchToSignUp={openSignUpModal} 
+        onLoginSuccess={handleLoginSuccess} 
+      />
+      
+      <SignUpModal 
+        isOpen={isSignUpModalOpen} 
+        onClose={closeModals} 
+        onSwitchToLogin={openLoginModal} 
+        onSignUpSuccess={handleLoginSuccess} 
+      />
+
       <Routes>
-<<<<<<< HEAD
-        
-        {/* PAGE 1: THE HOME PAGE */}
-=======
->>>>>>> product-page
         <Route path="/" element={
           <div>
-            <Navbar 
-              isLoggedIn={isLoggedIn} 
-              openLoginModal={() => setIsLoginModalOpen(true)} 
-            />
+            <Navbar isLoggedIn={isLoggedIn} openLoginModal={openLoginModal} cartCount={cartCount} onLogout={handleLogout} />
             <Hero />
             <ProductGrid />
             <About />
@@ -68,65 +96,48 @@ function App() {
           </div>
         } />
 
-<<<<<<< HEAD
-        {/* PAGE 2: THE CART PAGE (New!) */}
         <Route path="/cart" element={
           <div>
-            <Navbar />
-            {/* We will replace this H1 with your actual Cart component next! */}
-            <h1 style={{ textAlign: 'center', margin: '150px 0' }}>Your Cart Page is Ready to Build!</h1>
+            <Navbar isLoggedIn={isLoggedIn} openLoginModal={openLoginModal} cartCount={cartCount} onLogout={handleLogout} />
+            <Cart cartItems={cartItems} setCartItems={setCartItems} /> 
             <Footer />
           </div>
         } />
 
-        {/* PAGE 3: THE PRODUCT DETAILS PAGE (New!) */}
         <Route path="/product/:id" element={
           <div>
-            <Navbar />
-            {/* We will replace this H1 with your product.html/jsx design! */}
-            <h1 style={{ textAlign: 'center', margin: '150px 0' }}>Product Details Loading...</h1>
+            <Navbar isLoggedIn={isLoggedIn} openLoginModal={openLoginModal} cartCount={cartCount} onLogout={handleLogout} />
+            <Product isLoggedIn={isLoggedIn} openLoginModal={openLoginModal} addToCart={handleAddToCart} /> 
             <Footer />
           </div>
         } />
 
-        {/* PAGE 4: THE MAIN ADMIN DASHBOARD */}
+       <Route path="/checkout" element={
+          <div>
+            <Navbar 
+              isLoggedIn={isLoggedIn} 
+              openLoginModal={openLoginModal} 
+              cartCount={cartCount} 
+              onLogout={handleLogout} 
+            />
+            
+            <Checkout 
+              cartItems={cartItems} 
+              setCartItems={setCartItems} 
+              clearCart={clearCart} 
+            />
+            
+            <Footer />
+          </div>
+        } />
+
+        {/* ADMIN ROUTES */}
         <Route path="/admin" element={<AdminDashboard />} />
-
-        {/* PAGE 5: MANAGE PRODUCTS PAGE */}
         <Route path="/admin/products" element={<ManageProducts />} />
-
-        {/* PAGE 6: MANAGE ORDERS PAGE */}
         <Route path="/admin/orders" element={<ManageOrders />} />
 
       </Routes>
     </BrowserRouter>
-=======
-        <Route path="/product/:id" element={<Product />} />
-        <Route path="/cart" element={<Cart />} />
-      </Routes>
-
-      {/* 5. Drop both modals here at the bottom and pass them the functions */}
-      <LoginModal 
-        isOpen={isLoginModalOpen} 
-        onClose={() => setIsLoginModalOpen(false)}
-        onLoginSuccess={() => {
-          setIsLoggedIn(true); 
-          setIsLoginModalOpen(false); 
-        }}
-        onSwitchToSignUp={openSignUp} /* Passes the swap function to Login */
-      />
-
-      <SignUpModal 
-        isOpen={isSignUpModalOpen} 
-        onClose={() => setIsSignUpModalOpen(false)}
-        onSignUpSuccess={() => {
-          setIsLoggedIn(true); 
-          setIsSignUpModalOpen(false); 
-        }}
-        onSwitchToLogin={openLogin} /* Passes the swap function to Sign Up */
-      />
-    </Router>
->>>>>>> product-page
   );
 }
 
