@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useClerk } from '@clerk/clerk-react'; // 🔥 1. Imported Clerk's hook
 import './Navbar.css';
 
 import logo from '../assets/logo.png';
@@ -11,6 +12,9 @@ const Navbar = ({ isLoggedIn, openLoginModal, cartCount, onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const navigate = useNavigate(); 
+  
+  // 🔥 2. Grab the official signOut function from Clerk
+  const { signOut } = useClerk();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -72,7 +76,7 @@ const Navbar = ({ isLoggedIn, openLoginModal, cartCount, onLogout }) => {
               <img src={userIcon} alt="User" className="nav-icon" />
             </button>
 
-            {/* 🔥 PROFILE DROPDOWN MENU (Shows when logged in and icon is clicked) */}
+            {/* 🔥 PROFILE DROPDOWN MENU */}
             {isLoggedIn && isProfileDropdownOpen && (
               <div className="profile-dropdown">
                 <div className="profile-dropdown-header">
@@ -83,8 +87,9 @@ const Navbar = ({ isLoggedIn, openLoginModal, cartCount, onLogout }) => {
                 <button 
                   className="dropdown-logout-btn" 
                   onClick={() => {
-                    setIsProfileDropdownOpen(false);
-                    onLogout();
+                    setIsProfileDropdownOpen(false); // 1. Close the menu instantly
+                    signOut(); // 2. Tell Clerk to securely log you out of Google
+                    onLogout(); // 3. Clear your local token and show your success alert
                   }}
                 >
                   🚪 Logout
